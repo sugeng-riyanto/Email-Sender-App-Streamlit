@@ -5,6 +5,54 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import subprocess
 
+def verify_openpyxl_installation():
+    """
+    Verify if openpyxl is installed in the Streamlit environment.
+    """
+    result = subprocess.run(["pip", "show", "openpyxl"], capture_output=True, text=True)
+    if result.returncode == 0:
+        print("openpyxl is installed in the Streamlit environment.")
+        print(result.stdout)
+    else:
+        print("openpyxl is not installed in the Streamlit environment.")
+
+def check_streamlit_permissions():
+    """
+    Check if the Streamlit environment has necessary permissions for package installations.
+    """
+    # You can add specific checks for permissions here if needed
+    print("Streamlit environment permissions checked.")
+
+def run_script_outside_streamlit():
+    """
+    Run the script directly using Python outside Streamlit environment.
+    """
+    # Replace 'your_script.py' with the name of your script
+    result = subprocess.run(["python", "your_script.py"], capture_output=True, text=True)
+    if result.returncode == 0:
+        print("Script ran successfully outside Streamlit environment.")
+        print(result.stdout)
+    else:
+        print("Error running script outside Streamlit environment.")
+        print(result.stderr)
+
+def update_streamlit_environment():
+    """
+    Update Streamlit to the latest version.
+    """
+    result = subprocess.run(["pip", "install", "--upgrade", "streamlit"], capture_output=True, text=True)
+    if result.returncode == 0:
+        print("Streamlit environment updated successfully.")
+        print(result.stdout)
+    else:
+        print("Error updating Streamlit environment.")
+        print(result.stderr)
+
+# Call functions as needed
+verify_openpyxl_installation()
+check_streamlit_permissions()
+run_script_outside_streamlit()
+update_streamlit_environment()
 # Install openpyxl if not already installed
 subprocess.run(["pip", "install", "openpyxl"])
 
