@@ -3,6 +3,10 @@ import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import subprocess
+
+# Install openpyxl if not already installed
+subprocess.run(["pip", "install", "openpyxl"])
 
 # SMTP configuration
 your_name = "Sekolah Harapan Bangsa"
