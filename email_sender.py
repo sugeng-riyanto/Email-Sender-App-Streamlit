@@ -1,13 +1,8 @@
-import subprocess
-
-subprocess.run(["pip", "install", "openpyxl"])
 import streamlit as st
 import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-
 
 # SMTP configuration
 your_name = "Sekolah Harapan Bangsa"
@@ -45,7 +40,6 @@ def main():
             description = entry['description']
             link = entry['link']
 
-            # Construct HTML email message
             message = f"""
                 <!DOCTYPE html>
                 <html lang="en">
@@ -65,7 +59,7 @@ def main():
                             <h2>{subject}</h2>
                         </div>
                         <div class="content">
-                            <p>Kepada Yth. Orang Tua/Wali Murid {name} (Kelas {grade})</p>
+                            <p>Kepada Yth.<br>Orang Tua/Wali Murid <span style="color: #007bff;">{name}</span> (Kelas <span style="color: #007bff;">{grade}</span>)</p>
                             <p>Salam Hormat,</p>
                             <p>Kami hendak menyampaikan info mengenai:</p>
                             <ul>
@@ -78,8 +72,8 @@ def main():
                             <p>Admin Sekolah</p>
                             <p><strong>Catatan:</strong><br>Mohon diabaikan jika sudah melakukan pembayaran.</p>
                             <p>Jika ada pertanyaan atau hendak konfirmasi dapat menghubungi:<br>
-                                <strong>Ibu Penna (Kasir):</strong> <a href='https://bit.ly/mspennashb'>https://bit.ly/mspennashb</a><br>
-                                <strong>Bapak Supatmin (Admin SMP & SMA):</strong> <a href='https://bit.ly/wamrsupatminshb4'>https://bit.ly/wamrsupatminshb4</a>
+                                <strong>Ibu Penna (Kasir):</strong> <a href='https://bit.ly/mspennashb' style="color: #007bff;">https://bit.ly/mspennashb</a><br>
+                                <strong>Bapak Supatmin (Admin SMP & SMA):</strong> <a href='https://bit.ly/wamrsupatminshb4' style="color: #007bff;">https://bit.ly/wamrsupatminshb4</a>
                             </p>
                         </div>
                         <div class="footer">
@@ -90,7 +84,6 @@ def main():
                 </html>
             """
 
-            # Send Email
             msg = MIMEMultipart()
             msg['From'] = your_email
             msg['To'] = email
@@ -106,4 +99,4 @@ def main():
         st.dataframe(df)
 
 if __name__ == '__main__':
-    main
+    main()
