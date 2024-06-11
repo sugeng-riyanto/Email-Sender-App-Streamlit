@@ -1,18 +1,13 @@
+import subprocess
+
+subprocess.run(["pip", "install", "openpyxl"])
 import streamlit as st
 import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-# Install openpyxl if not already installed
-try:
-    import openpyxl
-except ImportError:
-    st.warning("Installing openpyxl...")
-    st.code("pip install openpyxl")
-    import subprocess
-    subprocess.run(["pip", "install", "openpyxl"])
-    import openpyxl  # Verify import again
+
 
 # SMTP configuration
 your_name = "Sekolah Harapan Bangsa"
