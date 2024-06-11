@@ -5,26 +5,35 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import subprocess
 import sys
-import importlib
 
-def install_and_import(package):
-    try:
-        importlib.import_module(package)
-    except ImportError:
-        subprocess.run([sys.executable, "-m", "pip", "install", package])
-    finally:
-        globals()[package] = importlib.import_module(package)
+# SMTP configuration
+your_name = "Sekolah Harapan Bangsa"
+your_email = "shsmodernhill@shb.sch.id"
+your_password = "jvvmdgxgdyqflcrf"
+
+server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+server.ehlo()
+server.login(your_email, your_password)
+
+# Install openpyxl if not already installed
+try:
+    import openpyxl
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "openpyxl"])
+    import openpyxl
+
+# Define allowed files
+ALLOWED_EXTENSIONS = {'xlsx'}
+
+# Utility function to check allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def main():
-    # Install openpyxl if not already installed
-    install_and_import('openpyxl')
-
     st.title('Email Sender App')
 
     uploaded_file = st.file_uploader("Upload Excel file", type="xlsx")
     if uploaded_file is not None:
-        # Ensure pandas recognizes the newly installed openpyxl
-        importlib.reload(pd)
         df = pd.read_excel(uploaded_file)
         email_list = df.to_dict(orient='records')
 
@@ -99,13 +108,4 @@ def main():
         st.dataframe(df)
 
 if __name__ == '__main__':
-    # SMTP configuration
-    your_name = "Sekolah Harapan Bangsa"
-    your_email = "shsmodernhill@shb.sch.id"
-    your_password = "jvvmdgxgdyqflcrf"
-
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.ehlo()
-    server.login(your_email, your_password)
-    
     main()
