@@ -4,44 +4,27 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import subprocess
+import sys
+import importlib
 
-def install_openpyxl():
-    """
-    Install openpyxl if not already installed.
-    """
+def install_and_import(package):
     try:
-        import openpyxl
-        print("openpyxl is already installed.")
+        importlib.import_module(package)
     except ImportError:
-        print("Installing openpyxl...")
-        subprocess.run(["pip", "install", "openpyxl"])
-        print("openpyxl installed successfully.")
-
-# Install openpyxl if not already installed
-subprocess.run(["pip", "install", "openpyxl"])
-
-# SMTP configuration
-your_name = "Sekolah Harapan Bangsa"
-your_email = "shsmodernhill@shb.sch.id"
-your_password = "jvvmdgxgdyqflcrf"
-
-server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-server.ehlo()
-server.login(your_email, your_password)
-
-# Define allowed files
-ALLOWED_EXTENSIONS = {'xlsx'}
-
-# Utility function to check allowed file extensions
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        subprocess.run([sys.executable, "-m", "pip", "install", package])
+    finally:
+        globals()[package] = importlib.import_module(package)
 
 def main():
+    # Install openpyxl if not already installed
+    install_and_import('openpyxl')
+
     st.title('Email Sender App')
-    install_openpyxl()
 
     uploaded_file = st.file_uploader("Upload Excel file", type="xlsx")
     if uploaded_file is not None:
+        # Ensure pandas recognizes the newly installed openpyxl
+        importlib.reload(pd)
         df = pd.read_excel(uploaded_file)
         email_list = df.to_dict(orient='records')
 
@@ -116,4 +99,13 @@ def main():
         st.dataframe(df)
 
 if __name__ == '__main__':
+    # SMTP configuration
+    your_name = "Sekolah Harapan Bangsa"
+    your_email = "shsmodernhill@shb.sch.id"
+    your_password = "jvvmdgxgdyqflcrf"
+
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server.ehlo()
+    server.login(your_email, your_password)
+    
     main()
