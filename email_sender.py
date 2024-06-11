@@ -3,8 +3,6 @@ import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import subprocess
-import sys
 
 # SMTP configuration
 your_name = "Sekolah Harapan Bangsa"
@@ -14,13 +12,6 @@ your_password = "jvvmdgxgdyqflcrf"
 server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 server.ehlo()
 server.login(your_email, your_password)
-
-# Install openpyxl if not already installed
-try:
-    import openpyxl
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "openpyxl"])
-    import openpyxl
 
 # Define allowed files
 ALLOWED_EXTENSIONS = {'xlsx'}
@@ -34,7 +25,12 @@ def main():
 
     uploaded_file = st.file_uploader("Upload Excel file", type="xlsx")
     if uploaded_file is not None:
-        df = pd.read_excel(uploaded_file)
+        try:
+            df = pd.read_excel(uploaded_file)
+        except ImportError:
+            st.error("The 'openpyxl' package is required to read Excel files. Please ensure it is installed.")
+            return
+        
         email_list = df.to_dict(orient='records')
 
         for idx, entry in enumerate(email_list):
