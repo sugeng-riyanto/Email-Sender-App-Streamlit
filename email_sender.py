@@ -43,6 +43,8 @@ def main():
     elif choice == "Send Reminder":
         st.subheader("Send Reminder")
         handle_file_upload(proof_payment=True)
+    # Add link to download template Excel file
+    st.markdown("[Download Template Excel file](https://drive.google.com/uc?export=download&id=1Z5PS5qIiTxI7rrq3q0BUpRJym8xWzHCB)")
 
 def handle_file_upload(announcement=False, invoice=False, proof_payment=False):
     uploaded_file = st.file_uploader("Upload Excel file", type="xlsx")
