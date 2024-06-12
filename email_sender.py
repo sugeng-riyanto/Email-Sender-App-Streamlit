@@ -4,7 +4,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from openpyxl import load_workbook
-#from prettytable import PrettyTable
+
 import os
 
 # SMTP configuration
