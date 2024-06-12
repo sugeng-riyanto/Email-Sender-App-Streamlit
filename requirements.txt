@@ -1,5 +1,4 @@
-streamlit
-pandas
-openpyxl
-smtplib
-prettytable
+Flask==2.0.2
+requests==2.26.0
+streamlit==1.1.0
+smtplib==0.1.1
